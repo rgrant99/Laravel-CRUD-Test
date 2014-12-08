@@ -82,6 +82,7 @@ class MessageController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		
 		$msg = Message::find($id);
         $msg->user_name = Input::get('user_name');
         $msg->msg      = Input::get('msg');

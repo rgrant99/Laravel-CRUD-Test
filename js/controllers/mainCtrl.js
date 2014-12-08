@@ -20,16 +20,19 @@ angular.module('mainCtrl', [])
 			});
 
 		// function to handle submitting the form
-		// SAVE A COMMENT ======================================================
+		// SAVE A MESSAGE ======================================================
 		$scope.submitMessage = function() {
+
+			if($.trim($scope.messageData.user_name)!="" && $.trim($scope.messageData.message)!=""){
+
 			$scope.loading = true;
 
-			// save the message. pass in comment data from the form
+			// save the message. pass in message data from the form
 			// use the function we created in our service
 			Message.save($scope.messageData)
 				.success(function(data) {
 
-					// if successful, we'll need to refresh the comment list
+					// if successful, we'll need to refresh the message list
 					Message.get()
 						.success(function(getData) {
 							$scope.messages = getData;
@@ -40,9 +43,13 @@ angular.module('mainCtrl', [])
 				.error(function(data) {
 					console.log(data);
 				});
+
+			}else{
+				alert("please complete the Form.");
+			}
 		};
 
-		// function to handle deleting a comment
+		// function to handle deleting a message
 		// DELETE A MESSAGE ====================================================
 		$scope.deleteMessage = function(id) {
 
