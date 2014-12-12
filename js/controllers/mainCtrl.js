@@ -14,8 +14,9 @@ angular.module('mainCtrl', [])
 		// GET ALL MESSAGE ====================================================
 		Message.get()
 			.success(function(data) {
-				console.log(data);
-				$scope.messages = data;
+				//console.log(data);
+				$scope.messages = tableFormat(data);
+				$("#msgs").html($scope.messages);
 				$scope.loading = false;
 			});
 
@@ -35,7 +36,8 @@ angular.module('mainCtrl', [])
 					// if successful, we'll need to refresh the message list
 					Message.get()
 						.success(function(getData) {
-							$scope.messages = getData;
+							$scope.messages = tableFormat(getData);
+							$("#msgs").html($scope.messages);
 							$scope.loading = false;
 						});
 
@@ -67,6 +69,7 @@ angular.module('mainCtrl', [])
 						Message.get()
 							.success(function(getData) {
 								$scope.messages = getData;
+								//$("#msgs").html($scope.messages);
 								$scope.loading = false;
 							});
 
@@ -76,4 +79,35 @@ angular.module('mainCtrl', [])
 		};
 
 	});
+
+function tableFormat(jsondata){
+	var output = "<ul id='list'>";
+	var last_id = "";
+
+	$.each(jsondata, function(i, item){
+
+		if(item.id != last_id){
+			output += "<li pid=\""+item.id+"\">";
+			output += "<h3>"+item.user_name+" <small>"+item.created_at+"</small></h3>";
+			output += "<p>"+item.msg+"</p>";
+			output += "<p><a href=\"edit/"+item.id+"\" class=\"text-muted\">Edit</a>&nbsp; <a href=\"#\" onclick=\"removeMessage("+item.id+")\" class=\"text-muted\">Delete</a> &nbsp; <a href=\"#\" onclick=\"buildComment('"+item.id+"','"+item.user_name+"')\" class=\"text-muted\">Comment</a></p>";
+			output += "</li>";
+		}
+
+		if($.trim(item.c_id) != "" && item.c_id != null){
+			output += "<li><ul><li>";
+			output += "<h3>"+item.c_user_name+" <small>"+item.c_created_at+"</small></h3>";
+			output += "<p>"+item.c_msg+"</p>";
+			output += "<p><a href=\"edit/"+item.c_id+"\" class=\"text-muted\">Edit</a> &nbsp; <a href=\"#\" onclick=\"removeMessage("+item.c_id+")\" class=\"text-muted\">Delete</a></p>";
+			output += "</li></ul></li>";
+		}
+
+		last_id = item.id;
+
+    });
+
+	output += "</ul>";
+
+	return output;
+}
 	

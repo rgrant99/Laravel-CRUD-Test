@@ -16,6 +16,7 @@ class CreateMessageTable extends Migration {
 		{
 			$table->increments('id');
 
+			$table->integer('parent_id');
 			$table->string('user_name');
 			$table->text('msg');
 

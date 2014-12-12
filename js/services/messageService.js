@@ -11,6 +11,7 @@ angular.module('messageService', [])
 
 			// save a message (pass in mesasge data)
 			save : function(messageData) {
+				messageData.parentId = $("#parentId").val();
 				return $http({
 					method: 'POST',
 					url: 'api/messages',
@@ -28,13 +29,18 @@ angular.module('messageService', [])
 	});
 
 
+function buildComment(msgId,userName){
+	$("#message").val("@"+userName+": ");
+	$("#parentId").val(msgId);
+}
+
 function removeMessage(msgId){
 	var selection = confirm("Are you sure you wish to remove this item?");
 
 	if(selection){
 		$.ajax({
 			type: "DELETE",
-			url: "/lv/api/messages/" + msgId,
+			url: "api/messages/" + msgId,
 			async: false,
 			cache: false,
 			success: function(resp){

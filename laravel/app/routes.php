@@ -13,9 +13,17 @@
 
 Route::get('/', function()
 {
-	//return View::make('hello');
-	return View::make('index');
+	return View::make('messages.home');
 });
+
+Route::get('/home', function()
+{
+	return View::make('messages.home');
+});
+
+Route::get('/showall', 'MessageController@show');
+
+Route::get('/edit/{id}', 'MessageController@edit');
 
 // =============================================
 // API ROUTES ==================================
@@ -29,7 +37,7 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'destroy', 'update')));
 });
 
-Route::resource('messages', 'MessageController');
+//Route::resource('messages', 'MessageController');
 
 // =============================================
 // CATCH ALL ROUTE =============================
